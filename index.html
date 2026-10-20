@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SEEDANCE PROMPT FORGE — Cinematic Battle Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080d1a;--card:#0f1830;--field:#0a1226;--line:#223056;--text:#eaf0fb;--mute:#8896b6;--red:#f0604d;--red2:#ff8a6b;--teal:#46d6d0;--gold:#ffbe5c;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:radial-gradient(800px 380px at 50% -120px,#1d2a55 0,var(--bg) 70%) no-repeat,var(--bg);color:var(--text);font:15px/1.5 Prompt,"Noto Sans Thai",Sarabun,system-ui,sans-serif}
+main{max-width:640px;margin:0 auto;padding:18px 14px 48px}
+h1{font-size:26px;margin:6px 0 4px;letter-spacing:.02em}
+.intro{color:var(--mute);font-size:14px;margin:0 0 14px}
+section.card{background:linear-gradient(180deg,#111d3b,var(--card));border:1px solid var(--line);border-radius:18px;padding:16px;margin:0 0 14px}
+h2{display:flex;align-items:center;gap:9px;margin:0 0 8px;font-size:18px}
+h2 i{font-style:normal;font-size:12px;font-weight:600;background:#3a1a22;color:var(--red2);border:1px solid #6b2a33;border-radius:7px;padding:2px 7px}
+.sub{color:var(--mute);font-size:13px;margin:0 0 6px}
+label.f{display:block;font-size:13px;color:#b9c5e0;margin:13px 0 5px}
+select,input[type=text],textarea{width:100%;background:var(--field);color:var(--text);border:1px solid var(--line);border-radius:11px;padding:11px 12px;font:inherit;font-size:14px}
+textarea{min-height:76px;resize:vertical}
+select:focus,input:focus,textarea:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 2px #46d6d033}
+::placeholder{color:#55648a}
+.char{background:#0b1429;border:1px solid var(--line);border-radius:14px;padding:12px;margin:12px 0}
+.char .hd{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.char .hd b{color:var(--gold)}
+.char .hd button{padding:6px 10px;font-size:12px;background:#3a1a22;border-color:#6b2a33;color:var(--red2)}
+.thumb{display:flex;align-items:center;gap:10px}
+.thumb img{width:48px;height:48px;object-fit:cover;border-radius:8px;border:1px solid var(--line)}
+.filebtn{display:inline-block;background:#fff;color:#111;border-radius:6px;padding:4px 8px;font-size:13px;cursor:pointer}
+.filebtn input{display:none}
+.checks{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.checks label{display:flex;align-items:center;gap:7px;background:var(--field);border:1px solid var(--line);border-radius:9px;padding:8px 11px;font-size:14px;cursor:pointer}
+.checks input{accent-color:var(--red);width:17px;height:17px}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+button{font:inherit;font-weight:600;font-size:14px;border-radius:11px;padding:11px 14px;cursor:pointer;border:1px solid var(--line);background:#121d38;color:var(--text)}
+button.red{background:linear-gradient(180deg,var(--red2),var(--red));color:#fff;border:0}
+button.teal{background:#0f2a35;border-color:#1d5560;color:var(--teal);width:100%}
+button:focus-visible,.tab:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.tab.on{background:#3a1a22;border-color:var(--red);color:var(--red2)}
+.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.gen{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:8px;margin-top:14px}
+#out{background:var(--field);border:1px solid var(--line);border-radius:11px;padding:12px;white-space:pre-wrap;word-break:break-word;font:12.5px/1.55 ui-monospace,Menlo,Consolas,monospace;max-height:520px;overflow:auto;min-height:60px}
+.res h2{justify-content:space-between}
+#cnt{font-size:12px;color:var(--mute);font-weight:400}
+.note{color:var(--mute);font-size:12.5px;margin-top:8px}
+footer{text-align:center;color:var(--mute);font-size:12px;margin-top:18px}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--red);color:#fff;padding:9px 16px;border-radius:99px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s}
+#toast.on{opacity:1}
+</style>
+</head>
+<body>
+<main>
+<h1>SEEDANCE PROMPT FORGE</h1>
+<p class="intro">สตูดิโอออกแบบพรอมต์วิดีโอภาพยนตร์ — เปลี่ยนตัวละคร พลัง ฉาก แอ็กชัน และสร้างฉากต่อเนื่องได้</p>
+<div id="form"></div>
+<section class="card" id="s7">
+<h2><i>07</i>สร้าง Prompt</h2>
+<div class="tabs" id="tabs"></div>
+<label class="f" for="sdur">ความยาวฉากนี้ (วินาที)</label><select id="sdur"></select>
+<label class="f" for="lang">ภาษาของ Prompt</label>
+<select id="lang"><option value="en">English (เหมาะกับโมเดลวิดีโอ)</option><option value="th">ภาษาไทย</option><option value="both">English + คำอธิบายไทย</option></select>
+<div class="gen"><button class="red" id="gen">✦ สร้าง Prompt</button><button id="copy">คัดลอก Prompt</button><button id="dl">ดาวน์โหลด .txt</button></div>
+<div class="btns" style="margin-bottom:0"><button class="teal" id="genAll">สร้าง Prompt ทั้ง 3 ฉาก</button></div>
+<div class="note" id="status">เลือกตัวละครและพลัง แล้วกด “สร้าง Prompt”</div>
+</section>
+<section class="card res"><h2>ผลลัพธ์ Prompt <span id="cnt">0 ตัวอักษร</span></h2>
+<div id="out" aria-live="polite">พร้อมสร้าง Prompt • เลือกตัวละครและพลัง แล้วกด “สร้าง Prompt”</div></section>
+<footer>SEEDANCE PROMPT FORGE • เครื่องมือสร้างข้อความ Prompt แบบปรับแต่งได้ • ภาพอ้างอิงที่เลือกจะไม่ถูกอัปโหลดหรือฝังลงในไฟล์ Prompt โดยอัตโนมัติ</footer>
+</main>
+<input type="file" id="jsonIn" accept=".json,application/json" hidden>
+<div id="toast" role="status"></div>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const S=(id,label,opts,def)=>({t:"s",id,label,opts,def});
+const T=(id,label,def,ph)=>({t:"t",id,label,def:def||"",ph});
+const A=(id,label,def,ph)=>({t:"a",id,label,def:def||"",ph});
+const LV=["1/10 — restrained","3/10 — skilled fighter","5/10 — elite warrior","7/10 — devastating","9/10 — battlefield annihilation","10/10 — godlike ultimate"];
+const SIDES=["Protagonist / ฝ่ายตัวเอก","Ally / พันธมิตร","Antagonist / ศัตรู","Minion / ลูกสมุน","Neutral / กลาง"];
+const SECTIONS=[
+{n:"01",t:"โปรเจกต์และรูปแบบวิดีโอ",f:[
+T("proj","ชื่อโปรเจกต์","PHOENIX — ASTRAL BATTLE"),
+S("model","โมเดลวิดีโอ",["Seedance 2.5","Kling","Runway Gen-3","Veo","Sora","Generic Video Model"]),
+S("dur","ความยาว (วินาที)",["5","8","10","15","20","30","60"],"10"),
+S("ratio","อัตราส่วนภาพ",["16:9","9:16","1:1","2.39:1","4:3"]),
+S("fps","เฟรมเรต",["24 FPS","30 FPS","60 FPS","120 FPS"],"60 FPS"),
+S("qual","คุณภาพ",["4K HDR","8K HDR","Photorealistic high detail","1080p cinematic"],"8K HDR"),
+S("style","สไตล์ภาพ",["Cinematic live-action dark fantasy, photorealistic","CG 国风暗黑仙侠, photorealistic cinematic game CG","Chinese wuxia live-action epic","Historical war film, gritty realism","Mythological fantasy, photorealistic","Anime cinematic","Custom / ผสมหลายสไตล์"]),
+T("render","ระบบเรนเดอร์","UE5.4 Path Tracing, Lumen GI, Nanite, volumetric fog, ray-traced reflections"),
+T("tone","โทนสี","ACES, dark Morandi palette, white-red flame highlights, deep shadow contrast"),
+T("cam","กล้อง","IMAX cinematic, low-angle tracking, fast orbit, wide establishing shots, dynamic push-ins"),
+T("aud","เสียง","Battle SFX only, explosions, rushing wind, impacts; NO MUSIC")]},
+{n:"02",t:"ตัวละครและภาพอ้างอิง",chars:true,f:[
+S("lockMode","โหมดล็อกตัวตน",["ABSOLUTE IDENTITY LOCK — exact face, hair, outfit","Strong identity consistency","Flexible character redesign"]),
+S("charSrc","ที่มาของตัวละคร",["Use uploaded reference images exactly","AI-generated character design","Mix uploaded references and AI designs"]),
+A("charExtra","ข้อกำหนดตัวละครเพิ่มเติม","Keep the same face, hairstyle, skin tone, body proportions and outfit in every shot. No unwanted armor, ears, tattoos, logos or costume changes. Realistic anatomy and consistent identity from all camera angles.")]},
+{n:"03",t:"ออกแบบพลังและเอฟเฟกต์",f:[
+S("pow","พลังหลักของตัวเอก",["White-red spiritual flame","Lightning / thunder","Black-red shadow energy","Ice and frost","Wind blades","Jade celestial energy","Void / gravity","Water dragon","Bloodless dark magic","Solar fire","Custom power"]),
+S("pow2","พลังรอง / ธาตุผสม",["Black-red particle aura","Cool silver-white energy","Lightning arcs","Storm wind","Ice shards","None","Custom secondary energy"]),
+S("lvl","ระดับพลัง",LV,"9/10 — battlefield annihilation"),
+S("spd","ความเร็วการต่อสู้",["1x — grounded realistic","1.5x — fast","2x — superhuman","Extreme superhuman speed","Near-instant dashes, readable motion"],"Extreme superhuman speed"),
+T("wpn","อาวุธ","","เช่น Elegant Chinese straight sword with silver blade"),
+S("ult","รูปแบบพลังขั้นสุดยอด",["Giant white-red spiritual fireball / meteor","Giant phoenix made of flame","Heaven-splitting lightning dragon","Colossal jade-white dragon","Black hole / gravity collapse","Frozen celestial domain","Custom ultimate attack"]),
+A("fxd","รายละเอียดเอฟเฟกต์พลัง","Dense turbulent flame, layered fluid-like energy, visible shockwaves, realistic light interaction, glowing particles attached close to the body, strong impact physics."),
+T("fx1","สัดส่วนเอฟเฟกต์ 1","40% white-red / cool silver-white flame"),
+T("fx2","สัดส่วนเอฟเฟกต์ 2","25% black-red and red-white particles"),
+T("fx3","สัดส่วนเอฟเฟกต์ 3","25% water, smoke, dust and atmospheric debris")]},
+{n:"04",t:"ฉาก การต่อสู้ และศัตรู",f:[
+S("env","สภาพแวดล้อม",["Gigantic dark ancient battlefield, ruined Chinese fortress, cracked ground","Floating celestial palace above storm clouds","Ancient bamboo forest at night","Burning imperial city","Snow-covered mountain temple","Underground demon realm","Modern ruined city","Custom environment"]),
+S("ecount","จำนวนศัตรู",["1","3–5","10–30","Hundreds / massive army","500 enemies","Thousands","Colossal boss + minions"],"Hundreds / massive army"),
+S("btype","รูปแบบการต่อสู้",["One-on-one duel","One against many","Solo hero vs massive army","Team battle","Army vs army","Boss battle","Aerial combat","Chase and escape"],"Solo hero vs massive army"),
+S("ally","การสนับสนุนฝ่ายเรา",["Off","On — allied forces support the hero","Summoned creatures","Flying mounts and spirit beasts"],"On — allied forces support the hero"),
+S("eres","การตอบโต้ของศัตรู",["Enemies continuously attack and counterattack","Coordinated tactical formations","Elite enemies adapt and dodge","Relentless swarm attacks"]),
+S("dmg","ความเสียหายสิ่งแวดล้อม",["Light environmental damage","Heavy destruction","Permanent battlefield destruction, collapsing ruins","Catastrophic terrain deformation"],"Permanent battlefield destruction, collapsing ruins"),
+A("sceneExtra","รายละเอียดฉากเพิ่มเติม","Broken fortress walls, ruined stone structures, cracked ground, deep ravines glowing with dark-red energy, burning debris, dense smoke, floating ash, muddy puddles reflecting firelight, storm clouds.")]},
+{n:"05",t:"ลำดับเหตุการณ์ / ไทม์ไลน์",sub:"ปรับจังหวะหลักของคลิปได้ โปรแกรมจะจัดสัดส่วนเวลาให้สอดคล้องกับความยาววิดีโอ",f:[
+T("tl1","ช่วงเปิดฉาก","Instant launch, first devastating slash"),
+T("tl2","ช่วงต่อสู้ต่อเนื่อง","Rapid multi-directional combat, dodges, counters, shockwaves"),
+T("tl3","ช่วงยกระดับพลัง","Surrounded by enemies, magic arrays ignite, power surges"),
+T("tl4","ช่วงไคลแมกซ์ / จบ","Massive ultimate impact, destruction, final cliffhanger frame"),
+S("endt","ประเภทตอนจบ",["Strong battle cliffhanger — threat remains","Hero victory pose","Reveal a greater enemy","Seamless continuation into next scene","Tragic sacrifice","Peaceful ending"]),
+S("cont","การต่อเนื่องกับคลิปก่อนหน้า",["Standalone scene — establish action immediately","Exact continuation from previous final frame","Use Image 1 as exact opening frame and Image 2 as identity reference","Continue same camera direction, motion and environment"])]},
+{n:"06",t:"กฎการเคลื่อนไหวและ Negative Prompt",rules:true,f:[
+A("neg","Negative Prompt (แก้ไขได้)","text, subtitles, UI, watermark, logo, music, blood, gore, severed limbs, white hair, fox ears, unwanted armor, outfit change, face deformation, identity change, hairstyle change, wrong body proportions, extra fingers, missing fingers, deformed hands, broken anatomy, character duplication, character merging, camera clipping, static character, standing still, slow motion, excessive motion blur, long charging, weak impact, weak particle effects, empty battlefield, plastic CGI, cartoon look, low detail, flickering character, unstable face, outfit morphing, weapon morphing")],actions:true}
+];
+const RULES=[["แอ็กชันรวดเร็วต่อเนื่อง","continuous fast-paced action from the first frame"],["ห้ามสโลว์โมชัน","no slow motion, real-time speed only"],["ฟิสิกส์และแรงปะทะสมจริง","realistic physics and impact forces"],["ไม่มีเลือด / gore","no blood, no gore"],["ไม่มีดนตรี","no music"],["ล็อกใบหน้าและชุด","lock face and outfit in every frame"],["ความเสียหายคงอยู่","destruction persists across the scene"],["อนุภาคหนาแน่น","dense particles and debris"]];
+const PHOENIX={name:"Phoenix — Female Protagonist",side:SIDES[0],role:"Main fighter and phoenix summoner",power:"White-red spiritual flame + black-red aura",look:"Exact face and body proportions from uploaded reference; realistic human anatomy; consistent facial identity from every angle",hair:"Black hair gathered into a neat bun/updo with loose strands framing the face",outfit:"White sleeveless camisole with thin straps; traditional wrap skirt; no armor",weapon:"Elegant Chinese straight sword, silver blade",lv:"9/10"};
+const BLANK={name:"Character 2",side:SIDES[0],role:"Main fighter",power:"White-red spiritual flame",look:"",hair:"",outfit:"",weapon:"Elegant Chinese straight sword, silver blade",lv:"9/10"};
+const SHADOW={name:"Shadow Enemy",side:SIDES[2],role:"Elite enemy commander",power:"Black-red shadow energy",look:"Tall armored silhouette, glowing red eyes",hair:"",outfit:"Dark ritual armor",weapon:"Black war halberd",lv:"7/10"};
+let chars=[{...PHOENIX},{...BLANK}],scene=1,scenes=[{dur:"10"},{dur:"10"},{dur:"10"}],imgs={};
+const form=$("#form");
+function fieldHTML(f){
+ let h=`<label class="f" for="${f.id}">${f.label}</label>`;
+ if(f.t==="s")h+=`<select id="${f.id}">${f.opts.map(o=>`<option value="${esc(o)}">${esc(o)}</option>`).join("")}</select>`;
+ else if(f.t==="t")h+=`<input type="text" id="${f.id}" placeholder="${esc(f.ph||"")}">`;
+ else h+=`<textarea id="${f.id}"></textarea>`;
+ return h}
+SECTIONS.forEach(sec=>{
+ const c=document.createElement("section");c.className="card";c.id="sec"+sec.n;
+ let h=`<h2><i>${sec.n}</i>${sec.t}</h2>`;
+ if(sec.sub)h+=`<p class="sub">${sec.sub}</p>`;
+ if(sec.chars)h+=`<p class="sub">เพิ่มตัวละครได้หลายคน กำหนดฝ่าย บทบาท เสื้อผ้า อาวุธ และแนบภาพอ้างอิงจากเครื่องได้ (ภาพจะใช้เป็นคำอธิบายประกอบในหน้าจอนี้)</p><div id="chars"></div><div class="btns"><button class="red" id="addC">＋ เพิ่มตัวละคร</button><button id="addP">ใช้ตัวอย่างนางเอก Phoenix</button><button id="addS">เพิ่มศัตรูเงา</button></div>`;
+ h+=sec.f.map(fieldHTML).join("");
+ if(sec.rules)h=h.replace(/<label class="f" for="neg">/,`<div class="checks" id="rules">${RULES.map((r,i)=>`<label><input type="checkbox" data-i="${i}" checked>${r[0]}</label>`).join("")}</div><label class="f" for="neg">`);
+ if(sec.actions)h+=`<div class="btns"><button id="reset">รีเซ็ตค่าเริ่มต้น</button><button class="teal" style="width:auto" id="saveJ">บันทึกค่าตั้งค่าเป็น JSON</button><button id="loadJ">โหลด JSON</button></div>`;
+ c.innerHTML=h;form.insertBefore(c,null);
+});
+const flat=SECTIONS.flatMap(s=>s.f);
+function setDefaults(){flat.forEach(f=>{const e=$("#"+f.id);e.value=f.t==="s"?(f.def||f.opts[0]):f.def});
+ document.querySelectorAll("#rules input").forEach(c=>c.checked=true)}
+$("#sdur").innerHTML=["5","8","10","12","15","20"].map(o=>`<option>${o}</option>`).join("");
+function renderChars(){
+ $("#chars").innerHTML=chars.map((c,i)=>`<div class="char" data-i="${i}"><div class="hd"><b>✦ ${esc(c.name||"Character "+(i+1))}</b><button data-del="${i}">ลบตัวละคร</button></div>
+ <label class="f">ชื่อตัวละคร</label><input type="text" data-k="name" value="${esc(c.name)}">
+ <label class="f">ฝ่าย / ทีม</label><select data-k="side">${SIDES.map(o=>`<option ${o===c.side?"selected":""}>${esc(o)}</option>`).join("")}</select>
+ <label class="f">บทบาท</label><input type="text" data-k="role" value="${esc(c.role)}">
+ <label class="f">พลังประจำตัว</label><input type="text" data-k="power" value="${esc(c.power)}">
+ <label class="f">ใบหน้า รูปร่าง และรายละเอียด</label><textarea data-k="look" placeholder="เช่น ใบหน้าคม ผิวขาว...">${esc(c.look)}</textarea>
+ <label class="f">ทรงผม</label><input type="text" data-k="hair" value="${esc(c.hair)}" placeholder="เช่น black hair in neat bun">
+ <label class="f">เสื้อผ้า</label><input type="text" data-k="outfit" value="${esc(c.outfit)}" placeholder="เช่น white camisole + brown-orange skirt">
+ <label class="f">อาวุธ</label><input type="text" data-k="weapon" value="${esc(c.weapon)}">
+ <label class="f">ระดับพลัง</label><select data-k="lv">${["1/10","2/10","3/10","4/10","5/10","6/10","7/10","8/10","9/10","10/10"].map(o=>`<option ${o===c.lv?"selected":""}>${o}</option>`).join("")}</select>
+ <label class="f">ภาพอ้างอิงตัวละคร (เลือกไฟล์จากเครื่อง)</label><div class="thumb"><label class="filebtn">เลือกไฟล์<input type="file" accept="image/*" data-img="${i}"></label><span class="sub" style="margin:0">${imgs[i]?esc(imgs[i].name):"ไม่ได้เลือกไฟล์ใดๆ"}</span>${imgs[i]?`<img src="${imgs[i].url}" alt="">`:""}</div></div>`).join("")}
+$("#chars").addEventListener("input",e=>{const w=e.target.closest(".char"),k=e.target.dataset.k;if(w&&k)chars[+w.dataset.i][k]=e.target.value});
+$("#chars").addEventListener("change",e=>{const i=e.target.dataset.img;if(i!=null&&e.target.files[0]){const f=e.target.files[0];imgs[i]={name:f.name,url:URL.createObjectURL(f)};renderChars()}});
+$("#chars").addEventListener("click",e=>{const d=e.target.dataset.del;if(d!=null){chars.splice(+d,1);imgs={};renderChars()}});
+$("#addC").onclick=()=>{chars.push({...BLANK,name:"Character "+(chars.length+1)});renderChars()};
+$("#addP").onclick=()=>{chars.push({...PHOENIX});renderChars();toast("ใส่ตัวอย่างนางเอก Phoenix แล้ว");$("#status").textContent="ใส่ตัวอย่างนางเอก Phoenix แล้ว"};
+$("#addS").onclick=()=>{chars.push({...SHADOW});renderChars();toast("เพิ่มศัตรูเงาแล้ว")};
+function renderTabs(){$("#tabs").innerHTML=[1,2,3].map(n=>`<button class="tab ${n===scene?"on":""}" data-n="${n}">Scene ${n}${n>1?" ต่อเนื่อง":""}</button>`).join("");$("#sdur").value=scenes[scene-1].dur}
+$("#tabs").onclick=e=>{const n=e.target.dataset.n;if(n){scene=+n;renderTabs()}};
+$("#sdur").onchange=()=>{scenes[scene-1].dur=$("#sdur").value};
+const v=id=>$("#"+id).value.trim();
+function timeline(d){const w=[.15,.4,.2,.25];let t=0;return w.map((x,i)=>{const a=t,b=i===3?d:Math.round((t+x*d)*10)/10;t=b;return `${a}-${b}s`})}
+const TH={sc:"ฉาก",dur:"ความยาว",model:"โมเดล",ratio:"อัตราส่วน",style:"สไตล์"};
+function build(n,lang){
+ const d=+scenes[n-1].dur,tl=timeline(d),nums=n>1?"Exact continuation from the previous scene's final frame; same camera direction, motion, environment and identity.":v("cont");
+ const th=lang==="th";
+ const chs=chars.map((c,i)=>`${i+1}. ${c.name} — ${c.side}; role: ${c.role}; power: ${c.power}; level ${c.lv}${c.look?"; appearance: "+c.look:""}${c.hair?"; hairstyle: "+c.hair:""}${c.outfit?"; outfit: "+c.outfit:""}${c.weapon?"; weapon: "+c.weapon:""}${imgs[i]?"; reference image: "+imgs[i].name:""}`).join("\n");
+ const rules=[...document.querySelectorAll("#rules input:checked")].map(c=>RULES[+c.dataset.i][1]).join("; ");
+ const L=[
+ `${v("proj")} — SCENE ${n}`,`MODEL: ${v("model")}`,`DURATION: ${d} SECONDS`,`ASPECT RATIO: ${v("ratio")}`,`FRAME RATE: ${v("fps")}`,`QUALITY: ${v("qual")}`,`STYLE: ${v("style")}`,`RENDER: ${v("render")}`,`COLOR: ${v("tone")}`,`CAMERA: ${v("cam")}`,`AUDIO: ${v("aud")}`,
+ `\nCHARACTER LOCK: ${v("lockMode")}\nCHARACTER SOURCE: ${v("charSrc")}\n${chs}\n${v("charExtra")}`,
+ `\nPOWER: ${v("pow")}; secondary: ${v("pow2")}; power level ${v("lvl")}; combat speed: ${v("spd")}${v("wpn")?"; weapon: "+v("wpn"):""}\nULTIMATE: ${v("ult")}\nEFFECTS: ${v("fxd")}\nEFFECT MIX: ${v("fx1")}; ${v("fx2")}; ${v("fx3")}`,
+ `\nENVIRONMENT: ${v("env")}\nENEMIES: ${v("ecount")}\nBATTLE TYPE: ${v("btype")}\nALLIED SUPPORT: ${v("ally")}\nENEMY BEHAVIOR: ${v("eres")}\nENVIRONMENT DAMAGE: ${v("dmg")}\nSCENE DETAILS: ${v("sceneExtra")}`,
+ `\nTIMELINE (${d}s):\n${tl[0]} ${v("tl1")}\n${tl[1]} ${v("tl2")}\n${tl[2]} ${v("tl3")}\n${tl[3]} ${v("tl4")}`,
+ `ENDING: ${v("endt")}\nCONTINUITY: ${nums}`,
+ `\nMOTION RULES: ${rules}`,`\nNEGATIVE PROMPT: ${v("neg")}`];
+ let out=L.join("\n");
+ if(lang==="th"||lang==="both"){
+  const note=`\n\n— ${lang==="th"?"สรุปคำสั่งภาษาไทย":"คำอธิบายไทย"} —\nฉากที่ ${n} • ${v("model")} • ${d} วินาที • ${v("ratio")} • ${v("fps")}\nตัวละคร: ${chars.map(c=>c.name).join(", ")||"—"}\nพลัง: ${v("pow")} (${v("lvl")})\nศัตรู: ${v("ecount")} • รูปแบบ: ${v("btype")}\nเงื่อนไข: ${[...document.querySelectorAll("#rules input:checked")].map(c=>RULES[+c.dataset.i][0]).join(", ")}`;
+  out=lang==="th"?`${v("proj")} — ฉากที่ ${n}\nสร้างวิดีโอแนวต่อสู้ระดับภาพยนตร์ด้วย ${v("model")} ความยาว ${d} วินาที\n\n${out}${note}`:out+note}
+ return out}
+let last="";
+function show(t){last=t;$("#out").textContent=t;$("#cnt").textContent=t.length.toLocaleString()+" ตัวอักษร"}
+$("#gen").onclick=()=>{show(build(scene,$("#lang").value));$("#status").textContent="สร้าง Prompt ฉากที่ "+scene+" แล้ว";$("#out").scrollIntoView({behavior:"smooth",block:"center"})};
+$("#genAll").onclick=()=>{show([1,2,3].map(n=>build(n,$("#lang").value)).join("\n\n"+"═".repeat(30)+"\n\n"));$("#status").textContent="สร้าง Prompt ครบ 3 ฉากแล้ว";$("#out").scrollIntoView({behavior:"smooth",block:"center"})};
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove("on"),1800)}
+$("#copy").onclick=async()=>{if(!last){toast("กดสร้าง Prompt ก่อน");return}try{await navigator.clipboard.writeText(last);toast("คัดลอกแล้ว")}catch(x){const r=document.createRange();r.selectNodeContents($("#out"));const s=getSelection();s.removeAllRanges();s.addRange(r);toast("เลือกข้อความแล้ว กดคัดลอกเอง")}};
+function dlFile(name,text,type){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;document.body.appendChild(a);a.click();a.remove()}
+$("#dl").onclick=()=>{if(!last){toast("กดสร้าง Prompt ก่อน");return}dlFile("seedance-prompt.txt",last,"text/plain;charset=utf-8");toast("ดาวน์โหลดแล้ว")};
+function state(){const o={fields:{},chars,scenes,lang:$("#lang").value,rules:[...document.querySelectorAll("#rules input")].map(c=>c.checked)};flat.forEach(f=>o.fields[f.id]=$("#"+f.id).value);return o}
+$("#saveJ").onclick=()=>{dlFile("seedance-settings.json",JSON.stringify(state(),null,2),"application/json");toast("บันทึก JSON แล้ว")};
+$("#loadJ").onclick=()=>$("#jsonIn").click();
+$("#jsonIn").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);flat.forEach(x=>{if(o.fields&&o.fields[x.id]!=null)$("#"+x.id).value=o.fields[x.id]});if(Array.isArray(o.chars))chars=o.chars;if(Array.isArray(o.scenes))scenes=o.scenes;if(o.lang)$("#lang").value=o.lang;document.querySelectorAll("#rules input").forEach((c,i)=>{if(o.rules)c.checked=!!o.rules[i]});imgs={};renderChars();renderTabs();toast("โหลดค่าแล้ว")}catch(x){toast("ไฟล์ JSON ไม่ถูกต้อง")}};r.readAsText(f);e.target.value=""};
+$("#reset").onclick=()=>{setDefaults();chars=[{...PHOENIX},{...BLANK}];imgs={};scenes=[{dur:"10"},{dur:"10"},{dur:"10"}];scene=1;renderChars();renderTabs();last="";$("#out").textContent="พร้อมสร้าง Prompt • เลือกตัวละครและพลัง แล้วกด “สร้าง Prompt”";$("#cnt").textContent="0 ตัวอักษร";toast("รีเซ็ตแล้ว")};
+setDefaults();renderChars();renderTabs();
+</script>
+</body>
+</html>
